@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESP Trial</title>
+    <script src="/socket.io/socket.io.js"></script>
+
+    <style>
+        *,
+        *::after,
+        *::before {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            outline: none;
+            background: none;
+            border: none;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .app {
+            height: 100vh;
+            padding: 1rem;
+            background-color: papayawhip;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #toggleBtn {
+            height: 10rem;
+            width: 10rem;
+            border-radius: 10px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #fff;
+            background-color: hotpink;
+        }
+
+        #toggleBtn:hover {
+            transform: scale(1.1);
+            box-shadow: hotpink 0px 14px 28px;
+        }
+
+        #toggleBtn.on {
+            background-color: mediumaquamarine;
+        }
+
+        #toggleBtn.on:hover {
+            box-shadow: mediumaquamarine 0px 14px 28px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app">
+        <h1 id="toggleBtn">Reading...</h1>
+    </div>
+
+    <script>
+        const socket = io();
+
+        const toggleBtn = document.getElementById('toggleBtn');
+
+        let buttonState = "Reading....";
+
+        // toggleBtn.addEventListener('click', () => {
+        //     console.log(buttonState);
+        //     updateUI();
+        //     buttonState = !buttonState;
+        //     socket.emit('buttonState', buttonState);
+        // });
+
+        const updateUI = () => {
+            //buttonState ? toggleBtn.classList.add('on') : toggleBtn.classList.remove('on');
+            toggleBtn.innerText = buttonState;
+        }
+
+        socket.on('buttonState', state => {
+            console.log('Updated State', state);
+            buttonState = state;
+            updateUI();
+        })
+    </script>
+</body>
+
+</html>
